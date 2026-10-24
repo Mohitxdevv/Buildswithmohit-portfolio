@@ -37,51 +37,37 @@ export const BIO = [
 
 export const RESUME_URL = "/resume.pdf";
 
+
 export const TECH = [
-  { name: "React",          icon: SiReact },
-  { name: "Next.js",        icon: SiNextdotjs },
-  { name: "JavaScript",     icon: SiJavascript },
-  { name: "TypeScript",     icon: SiTypescript },
-  { name: "HTML5",          icon: SiHtml5 },
-  { name: "CSS3",           icon: SiCss },
-  { name: "Tailwind CSS",   icon: SiTailwindcss },
-  { name: "Node.js",        icon: SiNodedotjs },
-  { name: "Express",        icon: SiExpress },
-  { name: "Flutter",        icon: SiFlutter },
-  { name: "Shopify Liquid", icon: SiShopify },
-  { name: "Python",         icon: SiPython },
-  { name: "Java",           icon: FaJava },
-  { name: "C++",            icon: SiCplusplus },
-  { name: "PHP",            icon: SiPhp },
-  { name: "Go",             icon: SiGo },
-  { name: "Rust",           icon: SiRust },
-  { name: "Swift",          icon: SiSwift },
-  { name: "Kotlin",         icon: SiKotlin },
-  { name: "SQL",            icon: TbSql },
-  { name: "MongoDB",        icon: SiMongodb },
-  { name: "PostgreSQL",     icon: SiPostgresql },
-  { name: "MySQL",          icon: SiMysql },
-  { name: "Redis",          icon: SiRedis },
-  { name: "Git",            icon: SiGit },
-  { name: "Docker",         icon: SiDocker },
-  { name: "Vercel",         icon: SiVercel },
-  { name: "Netlify",        icon: SiNetlify },
-  { name: "Postman",        icon: SiPostman },
+  { name: "HTML5", icon: SiHtml5 },
+  { name: "CSS3", icon: SiCss },
+  { name: "Firebase", icon: SiReact },
+  { name: "AI Tools", icon: SiJavascript },
+  { name: "Website Development", icon: SiNextdotjs },
+  { name: "Discord Bot Development", icon: SiNodedotjs },
 ];
 
 export const CREATIVE = [
-  { name: "After Effects",   icon: TbBrandAdobeAfterEffect },
-  { name: "Premiere Pro",    icon: TbBrandAdobePremier },
-  { name: "DaVinci Resolve", icon: SiDavinciresolve },
-  { name: "CapCut",          icon: TbCut },
-  { name: "Photoshop",       icon: TbBrandAdobePhotoshop },
-  { name: "Lightroom",       icon: TbPhoto },
-  { name: "Figma",           icon: SiFigma },
-  { name: "Illustrator",     icon: TbBrandAdobeIllustrator },
+  { name: "Video Editing", icon: TbCut },
+  { name: "Graphic Design", icon: TbPhoto },
+  { name: "AI-Assisted Creation", icon: SiFigma },
 ];
 
 export const EXPERIENCE = [
-  { role: "Freelance Developer",                       period: "2024 – Present" },
-  { role: "Freelance Video Editor",                    period: "2022 – Present" },
-  { role: "Freelance Photo Editor & Graphic Designer", period: "2020 – Present" },
+  {
+    role: "Student & Aspiring Developer",
+    period: "Present",
+  },
+  {
+    role: "Website Development & Personal Projects",
+    period: "Ongoing",
+  },
+  {
+    role: "Content Creation & Video Editing",
+    period: "Ongoing",
+  },
+  {
+    role: "Discord Bot Development",
+    period: "Ongoing",
+  },
 ];

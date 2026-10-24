@@ -91,8 +91,7 @@ export default function Navbar() {
           )}
           <Link href="/" className="flex items-center hover:opacity-80 transition-opacity duration-300">
             <Image
-              src="/photo/logo navbar inverse.png"
-              alt="Sarang — Portfolio Designer & Creative Developer"
+              alt="Mohit — Student, Developer & Content Creator"
               width={120} height={40}
               className="h-9 w-auto"
               priority
@@ -165,13 +164,13 @@ export default function Navbar() {
                    setIsContactOpen(true);
                  }}
                  className="w-full py-4 bg-[#ff6b1a] text-black text-xl font-bold tracking-tight rounded-2xl hover:bg-white hover:text-black transition-colors duration-300"
-               >
+               >Mohit · BuildsWithMohit
                  Start Now
                </button>
             </li>
           </ul>
           <div className="mobile-nav-link mt-16 text-[10px] text-white/20 tracking-[0.4em] uppercase">
-            Sarang · Portfolio
+            
           </div>
         </div>
       )}

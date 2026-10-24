@@ -1,78 +1,147 @@
-import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
-import { supabase } from '@/lib/supabase';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { NextResponse } from "next/server";
+import { Resend } from "resend";
+import { supabase } from "@/lib/supabase";
 
 const DAILY_LIMIT = 3;
 
 function getIP(request) {
   return (
-    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    request.headers.get('x-real-ip') ||
-    '0.0.0.0'
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip") ||
+    "unknown"
   );
 }
 
+function escapeHTML(value = "") {
+  return String(value).replace(/[&<>"']/g, (char) => {
+    const entities = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    };
+    return entities[char];
+  });
+}
+
 export async function POST(request) {
-  const { name, email, message } = await request.json();
-
-  if (!name || !email || !message) {
-    return NextResponse.json({ error: 'All fields are required' }, { status: 400 });
-  }
-
-  // ── Rate limit: max 3 per IP per day ──────────────────────────
-  const ip = getIP(request);
-  const dayStart = new Date();
-  dayStart.setHours(0, 0, 0, 0);
-
-  const { count } = await supabase
-    .from('inquiries')
-    .select('*', { count: 'exact', head: true })
-    .eq('ip', ip)
-    .gte('created_at', dayStart.toISOString());
-
-  if (count >= DAILY_LIMIT) {
-    return NextResponse.json(
-      { error: `Too many messages. You can send up to ${DAILY_LIMIT} messages per day.` },
-      { status: 429 }
-    );
-  }
-
   try {
-    // Save to Supabase (include ip for rate limiting)
-    const { error: dbError } = await supabase.from('inquiries').insert([{ name, email, message, ip }]);
-    if (dbError) {
-      console.error('Supabase insert error:', dbError);
+    const body = await request.json();
+    const name = String(body.name || "").trim();
+    const email = String(body.email || "").trim();
+    const message = String(body.message || "").trim();
+
+    if (!name || !message) {
+      return NextResponse.json(
+        { error: "Name and message are required." },
+        { status: 400 }
+      );
     }
 
-    // Send email
-    const { data, error: emailError } = await resend.emails.send({
-      from: 'Portfolio Contact <support@sarang-space.site>',
-      to: process.env.ADMIN_EMAIL,
-      replyTo: email,
-      subject: `New message from ${name}`,
+    if (name.length > 100 || message.length > 3000) {
+      return NextResponse.json(
+        { error: "Your message exceeds the allowed length." },
+        { status: 400 }
+      );
+    }
+
+    if (
+      email &&
+      (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254)
+    ) {
+      return NextResponse.json(
+        { error: "Please enter a valid email address." },
+        { status: 400 }
+      );
+    }
+
+    const ip = getIP(request);
+    const dayStart = new Date();
+    dayStart.setHours(0, 0, 0, 0);
+
+    const { count, error: countError } = await supabase
+      .from("inquiries")
+      .select("*", { count: "exact", head: true })
+      .eq("ip", ip)
+      .gte("created_at", dayStart.toISOString());
+
+    if (countError) {
+      console.error("Rate-limit check failed:", countError);
+      return NextResponse.json(
+        { error: "Unable to process your message right now." },
+        { status: 503 }
+      );
+    }
+
+    if ((count ?? 0) >= DAILY_LIMIT) {
+      return NextResponse.json(
+        { error: "Daily message limit reached. Please try again tomorrow." },
+        { status: 429 }
+      );
+    }
+
+    const apiKey = process.env.RESEND_API_KEY;
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const fromEmail = process.env.CONTACT_FROM_EMAIL;
+
+    if (!apiKey || !adminEmail || !fromEmail) {
+      console.error("Contact email environment variables are missing.");
+      return NextResponse.json(
+        { error: "Contact email is not configured yet." },
+        { status: 503 }
+      );
+    }
+
+    const { error: dbError } = await supabase
+      .from("inquiries")
+      .insert([{ name, email, message, ip }]);
+
+    if (dbError) {
+      console.error("Inquiry save failed:", dbError);
+      return NextResponse.json(
+        { error: "Unable to save your message right now." },
+        { status: 500 }
+      );
+    }
+
+    const resend = new Resend(apiKey);
+
+    const { error: emailError } = await resend.emails.send({
+      from: fromEmail,
+      to: adminEmail,
+      ...(email ? { replyTo: email } : {}),
+      subject: `Portfolio message from ${name}`,
       html: `
-        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#0d0d0d;color:#fff;padding:32px;border-radius:12px">
-          <h2 style="color:#ff6b1a;margin:0 0 24px">New Contact Form Submission</h2>
-          <table style="width:100%;border-collapse:collapse">
-            <tr><td style="padding:8px 0;color:#999;width:80px">From</td><td style="padding:8px 0;color:#fff">${name}</td></tr>
-            <tr><td style="padding:8px 0;color:#999">Email</td><td style="padding:8px 0;color:#ff6b1a"><a href="mailto:${email}" style="color:#ff6b1a">${email}</a></td></tr>
-          </table>
-          <hr style="border:1px solid #222;margin:20px 0"/>
-          <p style="color:#ccc;line-height:1.7;white-space:pre-wrap">${message}</p>
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;padding:24px">
+          <h2>New BuildsWithMohit contact message</h2>
+          <p><strong>Name:</strong> ${escapeHTML(name)}</p>
+          <p><strong>Email:</strong> ${
+            email
+              ? `<a href="mailto:${escapeHTML(email)}">${escapeHTML(email)}</a>`
+              : "Not provided"
+          }</p>
+          <hr />
+          <p style="white-space:pre-wrap">${escapeHTML(message)}</p>
         </div>
       `,
     });
 
     if (emailError) {
-      console.error('Resend error:', emailError);
-      return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
+      console.error("Resend delivery error:", emailError);
+      return NextResponse.json(
+        { error: "Message saved, but email delivery failed." },
+        { status: 502 }
+      );
     }
 
     return NextResponse.json({ success: true });
-  } catch (err) {
-    console.error('Resend error:', err);
-    return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
+  } catch (error) {
+    console.error("Contact route error:", error);
+    return NextResponse.json(
+      { error: "Something went wrong. Please try again." },
+      { status: 500 }
+    );
   }
 }

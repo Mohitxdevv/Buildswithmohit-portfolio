@@ -22,23 +22,17 @@ export const SECTION = {
 };
 
 export const HEADING = {
-  line1: "Crafting",
-  line2: "the",
-  line3: "invisible.",   // ghost (outline) style
+  line1: "Building",
+  line2: "ideas into",
+  line3: "reality.",
 };
 
 // *word* = highlighted/bold in BlurText
 export const BIO = [
-  "I am a *creative developer* and *digital designer* from *Kerala*, currently pursuing my second-year BSc in *Cybersecurity* at Vedavyasa Arts and Science College. Passionate about blending creativity with technology, I focus on building modern digital experiences that combine strong *visual storytelling*, *immersive aesthetics*, and functional web development.",
-  "Over the years, I have worked on *7+ websites* along with multiple digital creative projects across *branding*, *poster design*, *motion graphics*, ecommerce experiences, *video editing*, and visual campaigns. My work is heavily inspired by *cinematic design*, modern internet culture, *luxury branding aesthetics*, and emotionally driven visual storytelling.",
-  "As a creative developer, I specialize in *modern frontend development*, *responsive website experiences*, *Shopify ecommerce stores*, *portfolio websites*, and visually immersive landing pages. My design philosophy focuses on creating websites that feel *premium*, *smooth*, *interactive*, and *emotionally engaging* rather than generic or template-based.",
-  "I combine *development and design* into one creative workflow. This allows me to build websites that not only function efficiently but also create strong *visual impact* through typography, layout systems, *cinematic compositions*, and modern UI aesthetics. My projects are designed with attention to detail, branding consistency, and clean user experiences across desktop and mobile devices.",
-  "In addition to web development, I have extensive experience in *digital design* and *creative content production*. My portfolio includes *cinematic posters*, *luxury branding visuals*, promotional campaigns, social media creatives, and modern graphic design projects. My visual style often uses *bold typography*, *dark luxury themes*, *cinematic lighting*, futuristic compositions, and immersive design elements that create memorable digital identities.",
-  "I also work on *ecommerce experiences* and *Shopify-based stores*, focusing on minimal yet visually powerful layouts that improve branding, storytelling, and customer engagement. My ecommerce work combines modern UI design with clean presentation systems to create *premium online shopping experiences*.",
-  "Beyond design and development, I am passionate about *creative technology*, *AI-assisted workflows*, experimental interfaces, and modern digital culture. I actively explore new ideas around creative systems, *futuristic branding*, *immersive web experiences*, and innovative digital presentation styles.",
-  "Alongside website development and design, I have experience in *video editing*, *motion graphics*, and *cinematic storytelling*. I have worked on creative edits, emotional visual content, social media videos, and short film-related projects, helping me develop a deeper understanding of pacing, atmosphere, framing, and storytelling within digital media.",
-  "My creative philosophy is built around *originality*, *emotion*, *simplicity*, and *atmosphere*. I believe digital experiences should feel alive, visually expressive, and emotionally connected while maintaining modern usability and clean functionality. My work reflects a balance between *technical development* and *artistic direction*, helping brands and creators establish stronger digital identities.",
-  "Through continuous learning and experimentation, I continue to expand my work across website development, branding systems, *cinematic visuals*, ecommerce UI, *creative coding*, poster design, and immersive digital experiences. My goal is to create modern digital work that combines creativity, storytelling, technology, and strong visual identity into one cohesive experience."
+  "I am a *student*, *developer*, and *content creator* passionate about technology, gaming, and building digital experiences. I enjoy turning ideas into real projects while learning, experimenting, and improving my skills.",
+  "I authored *FAUG: The Untold Story*, a book exploring the journey of FAU-G. Writing this book has been an important milestone in my journey as a young creator.",
+  "I am also involved in projects around *web development*, *AI*, and *gaming*. My work includes the VedAI Vedic knowledge app, which is nearing completion, and projects connected to the *Ascent Esport* esports team.",
+  "Through my creator journey, I explore new technologies, develop digital projects, create content, and share what I learn. My goal is to keep building meaningful things, one project at a time."
 ];
 
 export const RESUME_URL = "/resume.pdf";

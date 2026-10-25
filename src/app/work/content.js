@@ -1,7 +1,10 @@
 // ─────────────────────────────────────────────
 //  WORK SECTION — edit everything here
 // ─────────────────────────────────────────────
-
+export const SECTION = {
+  label: "MY WORK",
+  heading: "Selected Projects",
+};
 
 export const FALLBACK_PROJECTS = [
   {

@@ -4,7 +4,6 @@ import { jwtVerify } from 'jose';
 import { Resend } from 'resend';
 import { supabase } from '@/lib/supabase';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 async function isAdmin() {
   const store = await cookies();
@@ -48,8 +47,19 @@ export async function POST(request) {
     // you can only send emails to the email address registered with your Resend account.
     // To send to "any mailer", you must verify a custom domain in the Resend dashboard 
     // and change the 'from' address below to something like 'hello@yourdomain.com'.
+    const apiKey = process.env.RESEND_API_KEY;
+const fromEmail = process.env.CONTACT_FROM_EMAIL;
+
+if (!apiKey || !fromEmail) {
+  return NextResponse.json(
+    { error: "Email service is not configured." },
+    { status: 503 }
+  );
+}
+
+const resend = new Resend(apiKey);
     const { data, error } = await resend.emails.send({
-      from: 'Sarang <support@sarang-space.site>',
+      from: fromEmail,
       to: to,
       subject: subject,
       html: `
